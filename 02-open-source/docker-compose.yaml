@@ -1,0 +1,33 @@
+# Define the services (containers) to be run
+services:
+  elasticsearch:
+    # Use the Elasticsearch image version 8.4.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.4.3
+    # Name the container 'elasticsearch'
+    container_name: elasticsearch
+    environment:
+      # Set Elasticsearch to run as a single node
+      - discovery.type=single-node
+      # Disable X-Pack security features
+      - xpack.security.enabled=false
+    ports:
+      # Map port 9200 on the host to port 9200 in the container (HTTP interface)
+      - "9200:9200"
+      # Map port 9300 on the host to port 9300 in the container (transport interface)
+      - "9300:9300"
+
+  ollama:
+    # Use the ollama image
+    image: ollama/ollama
+    # Name the container 'ollama'
+    container_name: ollama
+    volumes:
+      # Mount the 'ollama' volume to /root/.ollama in the container
+      - ollama:/root/.ollama
+    ports:
+      # Map port 11434 on the host to port 11434 in the container
+      - "11434:11434"
+
+# Declare a named volume 'ollama' for persistent storage
+volumes:
+  ollama:
